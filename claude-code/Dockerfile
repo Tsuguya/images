@@ -6,7 +6,7 @@ ARG SPIN_VERSION=3.6.2
 RUN apk add --no-cache \
       bash curl git libgcc libstdc++ ripgrep \
       rustup gcc musl-dev \
-    && curl -fsSL https://claude.ai/install.sh | sh \
+    && curl -fsSL https://claude.ai/install.sh | bash \
     && mv /root/.local/bin/claude /usr/local/bin/claude \
     && rustup-init -y --default-toolchain stable --profile minimal --target wasm32-wasip1 \
     && . /root/.cargo/env \
