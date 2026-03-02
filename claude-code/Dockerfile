@@ -9,7 +9,7 @@ RUN apk add --no-cache \
     && curl -fsSL https://claude.ai/install.sh | sh \
     && mv /root/.local/bin/claude /usr/local/bin/claude \
     && rustup-init -y --default-toolchain stable --profile minimal --target wasm32-wasip1 \
-    && source /root/.cargo/env \
+    && . /root/.cargo/env \
     && cp -a /root/.cargo /usr/local/cargo \
     && cp -a /root/.rustup /usr/local/rustup \
     && wget -qO /tmp/gh.tar.gz "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_amd64.tar.gz" \
