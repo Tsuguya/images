@@ -8,7 +8,9 @@ RUN apk add --no-cache \
       rustup gcc musl-dev
 
 RUN curl -fsSL https://claude.ai/install.sh | bash \
-    && mv /root/.local/bin/claude /usr/local/bin/claude \
+    && cp -a /root/.local/share/claude /usr/local/share/claude \
+    && ln -sf /usr/local/share/claude/bin/claude /usr/local/bin/claude \
+    && chmod -R a+rX /usr/local/share/claude \
     && rm -rf /root/.local
 
 RUN rustup-init -y --default-toolchain stable --profile minimal --target wasm32-wasip1 \
