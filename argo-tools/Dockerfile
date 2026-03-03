@@ -4,7 +4,9 @@ ARG KUBECTL_VERSION=1.35.2
 ARG GH_VERSION=2.74.1
 ARG YQ_VERSION=4.49.2
 
-RUN apk add --no-cache curl git \
+COPY github-auth.sh /usr/local/bin/
+
+RUN apk add --no-cache curl git openssl \
     && wget -qO /usr/local/bin/jq "https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-amd64" \
     && wget -qO /usr/local/bin/kubectl "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl" \
     && wget -qO /tmp/gh.tar.gz "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_amd64.tar.gz" \
