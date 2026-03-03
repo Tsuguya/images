@@ -4,7 +4,7 @@ ARG GH_VERSION=2.74.1
 ARG SPIN_VERSION=3.6.2
 
 RUN apk add --no-cache \
-      bash curl git libgcc libstdc++ ripgrep \
+      bash curl git jq libgcc libstdc++ openssl ripgrep \
       rustup gcc musl-dev
 
 RUN curl -fsSL https://claude.ai/install.sh | bash \
