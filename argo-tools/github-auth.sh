@@ -18,7 +18,7 @@ RESPONSE=$(curl -sf -X POST \
   -H "Accept: application/vnd.github+json" \
   "https://api.github.com/app/installations/${GITHUB_APP_INSTALLATION_ID}/access_tokens")
 
-TOKEN=$(printf '%s' "$RESPONSE" | sed -n 's/.*"token":"\([^"]*\)".*/\1/p')
+TOKEN=$(printf '%s' "$RESPONSE" | sed -n 's/.*"token": *"\([^"]*\)".*/\1/p')
 
 if [ -z "$TOKEN" ]; then
   echo "Failed to obtain installation token" >&2
