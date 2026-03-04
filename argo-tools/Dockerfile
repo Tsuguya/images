@@ -2,7 +2,7 @@ FROM alpine:3.23
 ARG JQ_VERSION=1.7.1
 ARG KUBECTL_VERSION=1.35.2
 ARG GH_VERSION=2.87.3
-ARG YQ_VERSION=4.49.2
+ARG YQ_VERSION=4.52.4
 
 RUN apk add --no-cache curl git openssl \
     && wget -qO /usr/local/bin/jq "https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-amd64" \
