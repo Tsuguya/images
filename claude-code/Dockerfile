@@ -1,6 +1,6 @@
 FROM alpine:3.23
 
-ARG GH_VERSION=2.74.1
+ARG GH_VERSION=2.87.3
 ARG SPIN_VERSION=3.6.2
 
 RUN apk add --no-cache \
