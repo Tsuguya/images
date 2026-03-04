@@ -1,7 +1,7 @@
 FROM alpine:3.23
 ARG JQ_VERSION=1.7.1
 ARG KUBECTL_VERSION=1.35.2
-ARG GH_VERSION=2.74.1
+ARG GH_VERSION=2.87.3
 ARG YQ_VERSION=4.49.2
 
 RUN apk add --no-cache curl git openssl \
