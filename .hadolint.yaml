@@ -1,0 +1,4 @@
+ignored:
+  - DL3018  # apk pin versions — managed via ARG + Renovate
+  - DL4006  # pipefail — curl | bash install pattern
+  - DL4001  # wget + curl mixed — intentional
