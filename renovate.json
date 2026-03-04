@@ -10,6 +10,16 @@
       "customType": "regex",
       "fileMatch": ["(^|/)Dockerfile$"],
       "matchStrings": [
+        "ARG TALOSCTL_VERSION=(?<currentValue>\\S+)\\n"
+      ],
+      "depNameTemplate": "siderolabs/talos",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["(^|/)Dockerfile$"],
+      "matchStrings": [
         "ARG JQ_VERSION=(?<currentValue>\\S+)\\n"
       ],
       "depNameTemplate": "jqlang/jq",
