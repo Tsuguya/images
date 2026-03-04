@@ -1,7 +1,7 @@
 FROM alpine:3.23
 ARG TALOSCTL_VERSION=1.12.4
 ARG KUBECTL_VERSION=1.35.2
-ARG JQ_VERSION=1.7.1
+ARG JQ_VERSION=1.8.1
 
 RUN apk add --no-cache curl \
     && wget -qO /usr/local/bin/talosctl "https://github.com/siderolabs/talos/releases/download/v${TALOSCTL_VERSION}/talosctl-linux-amd64" \
