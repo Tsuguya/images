@@ -18,6 +18,9 @@ RUN rustup-init -y --default-toolchain stable --profile minimal --target wasm32-
     && cp -a /root/.rustup /usr/local/rustup \
     && rm -rf /root/.cargo /root/.rustup
 
+RUN apk add --no-cache nodejs npm \
+    && npm install -g pnpm
+
 RUN wget -qO /tmp/gh.tar.gz "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_amd64.tar.gz" \
     && tar xzf /tmp/gh.tar.gz -C /tmp && mv /tmp/gh_${GH_VERSION}_linux_amd64/bin/gh /usr/local/bin/ \
     && wget -qO /tmp/spin.tar.gz "https://github.com/spinframework/spin/releases/download/v${SPIN_VERSION}/spin-v${SPIN_VERSION}-linux-amd64.tar.gz" \
@@ -28,6 +31,8 @@ RUN wget -qO /tmp/gh.tar.gz "https://github.com/cli/cli/releases/download/v${GH_
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH="/usr/local/cargo/bin:${PATH}" \
-    USE_BUILTIN_RIPGREP=0
+    USE_BUILTIN_RIPGREP=0 \
+    PNPM_HOME="/usr/local/share/pnpm" \
+    PATH="/usr/local/share/pnpm:${PATH}"
 
 USER 65532:65532
