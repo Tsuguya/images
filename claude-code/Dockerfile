@@ -19,7 +19,7 @@ RUN rustup-init -y --default-toolchain stable --profile minimal --target wasm32-
     && rm -rf /root/.cargo /root/.rustup
 
 RUN apk add --no-cache nodejs npm \
-    && npm install -g pnpm
+    && npm install -g pnpm@10.32.0
 
 RUN wget -qO /tmp/gh.tar.gz "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_amd64.tar.gz" \
     && tar xzf /tmp/gh.tar.gz -C /tmp && mv /tmp/gh_${GH_VERSION}_linux_amd64/bin/gh /usr/local/bin/ \
@@ -30,9 +30,8 @@ RUN wget -qO /tmp/gh.tar.gz "https://github.com/cli/cli/releases/download/v${GH_
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
-    PATH="/usr/local/cargo/bin:${PATH}" \
     USE_BUILTIN_RIPGREP=0 \
-    PNPM_HOME="/usr/local/share/pnpm" \
-    PATH="/usr/local/share/pnpm:${PATH}"
+    PNPM_HOME="/usr/local/share/pnpm"
+ENV PATH="/usr/local/share/pnpm:/usr/local/cargo/bin:${PATH}"
 
 USER 65532:65532
