@@ -30,7 +30,7 @@ RUN wget -qO /tmp/gh.tar.gz "https://github.com/cli/cli/releases/download/v${GH_
     && tar xzf /tmp/spin.tar.gz -C /usr/local/bin spin \
     && wget -qO /usr/local/bin/kubectl "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl" \
     && wget -qO /tmp/helm.tar.gz "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" \
-    && tar xzf /tmp/helm.tar.gz --strip-components=1 -C /usr/local/bin linux-amd64/helm \
+    && tar xzf /tmp/helm.tar.gz -C /tmp && mv /tmp/linux-amd64/helm /usr/local/bin/ \
     && wget -qO /tmp/logcli.zip "https://github.com/grafana/loki/releases/download/v${LOGCLI_VERSION}/logcli-linux-amd64.zip" \
     && unzip -o /tmp/logcli.zip -d /tmp && mv /tmp/logcli-linux-amd64 /usr/local/bin/logcli \
     && chmod +x /usr/local/bin/gh /usr/local/bin/spin /usr/local/bin/kubectl /usr/local/bin/helm /usr/local/bin/logcli \
