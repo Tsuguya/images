@@ -13,5 +13,5 @@ RUN apk add --no-cache curl git openssl \
     && wget -qO /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_amd64" \
     && wget -qO /usr/local/bin/cosign "https://github.com/sigstore/cosign/releases/download/v${COSIGN_VERSION}/cosign-linux-amd64" \
     && chmod +x /usr/local/bin/jq /usr/local/bin/kubectl /usr/local/bin/gh /usr/local/bin/yq /usr/local/bin/cosign
-COPY --chmod=755 github-auth.sh /usr/local/bin/
+COPY --chmod=755 github-auth.sh github-signed-commit.sh /usr/local/bin/
 USER 65532:65532
