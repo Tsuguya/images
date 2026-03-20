@@ -49,14 +49,30 @@ BASE_TREE=$(curl -sf -H "$AUTH" -H "$ACCEPT" \
   "$API/repos/$REPO/git/commits/$HEAD_SHA" | jq -r '.tree.sha')
 
 TREE_ITEMS="[]"
-for file in $(git diff --cached --name-only); do
+
+for file in $(git diff --cached --diff-filter=d --name-only); do
+  if git diff --cached --summary "$file" | grep -q 'mode change.*100755'; then
+    MODE="100755"
+  elif test -x "$file"; then
+    MODE="100755"
+  else
+    MODE="100644"
+  fi
+
   CONTENT=$(base64 < "$file" | tr -d '\n')
   BLOB_SHA=$(curl -sf -X POST -H "$AUTH" -H "$ACCEPT" \
     -d "{\"content\":\"$CONTENT\",\"encoding\":\"base64\"}" \
     "$API/repos/$REPO/git/blobs" | jq -r '.sha')
 
-  TREE_ITEMS=$(printf '%s' "$TREE_ITEMS" | jq --arg path "$file" --arg sha "$BLOB_SHA" \
-    '. + [{"path": $path, "mode": "100644", "type": "blob", "sha": $sha}]')
+  TREE_ITEMS=$(printf '%s' "$TREE_ITEMS" | jq \
+    --arg path "$file" --arg sha "$BLOB_SHA" --arg mode "$MODE" \
+    '. + [{"path": $path, "mode": $mode, "type": "blob", "sha": $sha}]')
+done
+
+for file in $(git diff --cached --diff-filter=D --name-only); do
+  TREE_ITEMS=$(printf '%s' "$TREE_ITEMS" | jq \
+    --arg path "$file" \
+    '. + [{"path": $path, "mode": "100644", "type": "blob", "sha": null}]')
 done
 
 if [ "$TREE_ITEMS" = "[]" ]; then
