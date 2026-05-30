@@ -84,7 +84,7 @@
     {
       "description": "Docker digest age gate is unenforceable (renovate#38656); the digest-cooldown workflow gates these instead",
       "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["digest"],
+      "matchUpdateTypes": ["digest", "pinDigest"],
       "minimumReleaseAge": "0"
     }
   ]
