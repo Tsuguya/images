@@ -1,0 +1,21 @@
+name: Digest cooldown
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  schedule:
+    - cron: "23 * * * *"
+
+permissions:
+  statuses: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  cooldown:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: ./digest-cooldown
+        with:
+          cooldown-days: 3
