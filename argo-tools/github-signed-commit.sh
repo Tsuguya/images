@@ -88,9 +88,12 @@ COMMIT_SHA=$(curl -sf -X POST -H "$AUTH" -H "$ACCEPT" \
   -d "{\"message\":$(printf '%s' "$MESSAGE" | jq -Rs .),\"tree\":\"$TREE_SHA\",\"parents\":[\"$HEAD_SHA\"]}" \
   "$API/repos/$REPO/git/commits" | jq -r '.sha')
 
+# `git/refs/` (plural), not `git/ref/`. The singular form is the read-only
+# endpoint — a PATCH to it returns 404, which `curl -sf` turns into exit 22
+# with nothing on stderr, so the commit is built and then silently discarded.
 curl -sf -X PATCH -H "$AUTH" -H "$ACCEPT" \
   -d "{\"sha\":\"$COMMIT_SHA\"}" \
-  "$API/repos/$REPO/git/ref/heads/$BRANCH" > /dev/null
+  "$API/repos/$REPO/git/refs/heads/$BRANCH" > /dev/null
 
 echo "Signed commit created: $COMMIT_SHA"
 
