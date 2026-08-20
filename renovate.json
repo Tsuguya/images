@@ -109,6 +109,18 @@
       "depNameTemplate": "GoogleContainerTools/container-structure-test",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "(^|/)Dockerfile$"
+      ],
+      "matchStrings": [
+        "ARG AQUA_VERSION=(?<currentValue>\\S+)\\n"
+      ],
+      "depNameTemplate": "aquaproj/aqua",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
     }
   ],
   "packageRules": [
