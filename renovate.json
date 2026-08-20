@@ -4,7 +4,9 @@
     "config:recommended",
     "helpers:pinGitHubActionDigests"
   ],
-  "schedule": ["before 9am on Monday"],
+  "schedule": [
+    "before 9am on Monday"
+  ],
   "timezone": "Asia/Tokyo",
   "minimumReleaseAge": "3 days",
   "platformAutomerge": false,
@@ -14,7 +16,9 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["(^|/)Dockerfile$"],
+      "fileMatch": [
+        "(^|/)Dockerfile$"
+      ],
       "matchStrings": [
         "ARG TALOSCTL_VERSION=(?<currentValue>\\S+)\\n"
       ],
@@ -24,7 +28,9 @@
     },
     {
       "customType": "regex",
-      "fileMatch": ["(^|/)Dockerfile$"],
+      "fileMatch": [
+        "(^|/)Dockerfile$"
+      ],
       "matchStrings": [
         "ARG JQ_VERSION=(?<currentValue>\\S+)\\n"
       ],
@@ -34,7 +40,9 @@
     },
     {
       "customType": "regex",
-      "fileMatch": ["(^|/)Dockerfile$"],
+      "fileMatch": [
+        "(^|/)Dockerfile$"
+      ],
       "matchStrings": [
         "ARG KUBECTL_VERSION=(?<currentValue>\\S+)\\n"
       ],
@@ -44,7 +52,9 @@
     },
     {
       "customType": "regex",
-      "fileMatch": ["(^|/)Dockerfile$"],
+      "fileMatch": [
+        "(^|/)Dockerfile$"
+      ],
       "matchStrings": [
         "ARG GH_VERSION=(?<currentValue>\\S+)\\n"
       ],
@@ -54,7 +64,9 @@
     },
     {
       "customType": "regex",
-      "fileMatch": ["(^|/)Dockerfile$"],
+      "fileMatch": [
+        "(^|/)Dockerfile$"
+      ],
       "matchStrings": [
         "ARG YQ_VERSION=(?<currentValue>\\S+)\\n"
       ],
@@ -64,11 +76,37 @@
     },
     {
       "customType": "regex",
-      "fileMatch": ["(^|/)Dockerfile$"],
+      "fileMatch": [
+        "(^|/)Dockerfile$"
+      ],
       "matchStrings": [
         "ARG SPIN_VERSION=(?<currentValue>\\S+)\\n"
       ],
       "depNameTemplate": "spinframework/spin",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "(^|/)Dockerfile$"
+      ],
+      "matchStrings": [
+        "ARG CRANE_VERSION=(?<currentValue>\\\\S+)\\\\n"
+      ],
+      "depNameTemplate": "google/go-containerregistry",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "(^|/)Dockerfile$"
+      ],
+      "matchStrings": [
+        "ARG CST_VERSION=(?<currentValue>\\\\S+)\\\\n"
+      ],
+      "depNameTemplate": "GoogleContainerTools/container-structure-test",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.*)$"
     }
@@ -76,15 +114,24 @@
   "packageRules": [
     {
       "description": "Group all patch and minor updates into a single PR",
-      "matchUpdateTypes": ["patch", "minor", "digest"],
+      "matchUpdateTypes": [
+        "patch",
+        "minor",
+        "digest"
+      ],
       "groupName": "all non-major updates",
       "automerge": true,
       "automergeType": "pr"
     },
     {
       "description": "Docker digest age gate is unenforceable (renovate#38656); the digest-cooldown workflow gates these instead",
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["digest", "pinDigest"],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "digest",
+        "pinDigest"
+      ],
       "minimumReleaseAge": "0"
     }
   ]
