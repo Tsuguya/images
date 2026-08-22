@@ -5,7 +5,7 @@ name: Digest cooldown
 # weaken the gate that is judging it. The action never checks out or runs
 # head-side code — it reads the diff over the API.
 
-on:
+on: # zizmor: ignore[dangerous-triggers]
   pull_request_target:
     types: [opened, synchronize, reopened, labeled, unlabeled, edited]
   schedule:
@@ -24,9 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
-      statuses: write
-      pull-requests: write
-      contents: read
+      statuses: write # post the digest-cooldown commit status
+      pull-requests: write # store first-seen instants in a PR comment
+      contents: read # read the diff
     steps:
       - uses: Tsuguya/digest-cooldown@8cef1af948c0b09c5b1fd900deeb65bb3a7c8ba8 # v1.0.0
         with:

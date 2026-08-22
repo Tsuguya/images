@@ -1,0 +1,79 @@
+name: CI
+
+# hadolint と Renovate 設定の検証は別々のワークフローに分かれていて、前者は
+# `paths: ["**/Dockerfile"]` で絞られていた。集約ジョブを必須チェックにする以上
+# その形は使えない — paths に一致しない PR ではジョブが起動せず、必須コンテキストが
+# 永久に "Waiting for status to be reported" のまま PR が詰まる。
+# 1 ファイルに寄せて paths 絞りを外した。hadolint が毎 PR 走るコストは数秒で、
+# 「Renovate 設定だけの PR は hadolint 側のトリガに一致しない」という分割理由も
+# 同時に消える。
+on:
+  pull_request:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  # ワークフロー自身の検査。actionlint と zizmor のピンは home-actions 側にあり、
+  # ここは呼び先の SHA を追うだけ。aqua.yaml は要らない（共有ワークフローが
+  # AQUA_CONFIG で自分の _tooling/aqua.yaml を使う）。
+  lint-workflows:
+    uses: Tsuguya/home-actions/.github/workflows/lint-workflows.yml@10834ead7a2c2ca71677a6b818cd066d329eacbb # v1.2.0
+    permissions:
+      contents: read
+
+  # Renovate は知らないキーを黙って捨てる。このリポジトリは二重エスケープした
+  # 正規表現で crane と container-structure-test を取りこぼしていた。
+  lint-renovate:
+    uses: Tsuguya/home-actions/.github/workflows/lint-renovate.yml@10834ead7a2c2ca71677a6b818cd066d329eacbb # v1.2.0
+    permissions:
+      contents: read
+
+  hadolint:
+    name: hadolint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read # checkout
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: hadolint/hadolint-action@2a66e89f53d0771bb131a7fa31f3136336094aa6 # v3.4.0
+        with:
+          recursive: true
+
+  # 必須チェックはこれ 1 個だけを ruleset に登録する。個別ジョブ名を必須化すると、
+  # 名前を変えた瞬間に報告されない必須コンテキストが残って PR が永久に止まる。
+  gate:
+    name: CI Gate
+    needs: [lint-workflows, lint-renovate, hadolint]
+    # `always()` ではなく `!cancelled()`。always() だと run をキャンセルしたとき
+    # 全ての leaf が `cancelled` を返し、下の case をすり抜けて必須チェックが
+    # 失敗として記録される。
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Aggregate results
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          set -euo pipefail
+          echo "Results: ${RESULTS}"
+          # fail-closed: needs が空だとループが素通りして緑になる
+          if [ -z "${RESULTS// /}" ]; then
+            echo "::error::No job results to aggregate (empty needs) — failing closed."
+            exit 1
+          fi
+          for r in ${RESULTS}; do
+            case "${r}" in
+              success|skipped) ;;
+              *) echo "::error::A required job concluded with: ${r}"; exit 1 ;;
+            esac
+          done
