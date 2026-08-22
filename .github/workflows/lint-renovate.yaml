@@ -1,0 +1,17 @@
+name: Lint renovate config
+
+# 別ファイルにしてあるのは lint.yaml のトリガが `**/Dockerfile` に絞られている
+# ため。Renovate 設定だけの PR はそこに一致しないので、同居させると検証されない。
+on:
+  pull_request:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  # Renovate は知らないキーを黙って捨てる。このリポジトリは二重エスケープした
+  # 正規表現で crane と container-structure-test を取りこぼしていた。
+  lint-renovate:
+    uses: Tsuguya/home-actions/.github/workflows/lint-renovate.yml@2e7f65a9ac3492f91652e2cbd4e267202b5dabfd # v0
+    permissions:
+      contents: read
