@@ -1,9 +1,14 @@
 FROM alpine:3.24@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b
 
+# renovate: datasource=github-releases depName=cli/cli extractVersion=^v(?<version>.*)$
 ARG GH_VERSION=2.97.0
+# renovate: datasource=github-releases depName=spinframework/spin extractVersion=^v(?<version>.*)$
 ARG SPIN_VERSION=3.6.3
+# renovate: datasource=github-releases depName=kubernetes/kubernetes extractVersion=^v(?<version>.*)$
 ARG KUBECTL_VERSION=1.36.3
+# renovate: datasource=github-releases depName=helm/helm extractVersion=^v(?<version>.*)$
 ARG HELM_VERSION=3.18.4
+# renovate: datasource=github-releases depName=grafana/loki extractVersion=^v(?<version>.*)$
 ARG LOGCLI_VERSION=3.6.7
 
 RUN apk add --no-cache \

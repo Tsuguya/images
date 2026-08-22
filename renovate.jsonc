@@ -1,0 +1,72 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  // No aqua preset: this repo has no aqua.yaml. The tools it pins are the ones it
+  // bakes into the images, not ones it runs in CI.
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
+  ],
+
+  // These images are rebuilt and pushed on merge, and every cluster workload that
+  // uses one is digest-pinned against it. Batch the churn into one weekly PR
+  // rather than rebuilding on each upstream release.
+  "schedule": ["before 9am on Monday"],
+  "timezone": "Asia/Tokyo",
+
+  "minimumReleaseAge": "3 days",
+
+  // Merge directly rather than queueing on GitHub: this repo has no required
+  // checks that platform automerge would wait on.
+  "platformAutomerge": false,
+
+  "customManagers": [
+    {
+      "description": [
+        "One annotation-driven manager for every tool baked into the Dockerfiles.",
+        "This replaced nine near-identical per-tool managers. That duplication was",
+        "not just verbose: two of the nine had double-escaped regexes (\\\\S+ instead",
+        "of \\\\S+, which matches a literal backslash), so crane and",
+        "container-structure-test silently matched nothing and went unmaintained.",
+        "Four more tools — helm, logcli, cosign, argocd — had no manager at all.",
+        "With the datasource next to the pin it maintains, adding an ARG without",
+        "maintaining it is visible in the diff instead of invisible in this file.",
+        "extractVersion is a capture group rather than a template because jq tags",
+        "its releases jq-1.8.2 while everything else uses a leading v."
+      ],
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)Dockerfile$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+) extractVersion=(?<extractVersion>\\S+)\\s*\\nARG \\w+_VERSION=(?<currentValue>\\S+)"
+      ]
+    }
+  ],
+
+  "packageRules": [
+    {
+      // Written as a packageRule rather than a top-level `docker` block, which is
+      // the pre-migration spelling Renovate rewrites on sight.
+      "description": "Pin docker digests (the base image); digest-cooldown soaks them",
+      "matchCategories": ["docker"],
+      "pinDigests": true
+    },
+    {
+      // One PR for the whole weekly refresh. Each image is rebuilt as a unit
+      // anyway, so splitting the bumps only multiplies the builds.
+      "description": "Group all patch and minor updates into a single PR",
+      "matchUpdateTypes": ["patch", "minor", "digest"],
+      "groupName": "all non-major updates",
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "description": [
+        "Docker digest age gate is unenforceable (renovate#38656); the",
+        "digest-cooldown workflow gates these instead."
+      ],
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["digest", "pinDigest"],
+      "minimumReleaseAge": "0"
+    }
+  ]
+}

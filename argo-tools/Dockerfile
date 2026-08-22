@@ -1,12 +1,21 @@
 FROM alpine:3.24@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b
+# renovate: datasource=github-releases depName=jqlang/jq extractVersion=^jq-(?<version>.*)$
 ARG JQ_VERSION=1.8.2
+# renovate: datasource=github-releases depName=kubernetes/kubernetes extractVersion=^v(?<version>.*)$
 ARG KUBECTL_VERSION=1.36.3
+# renovate: datasource=github-releases depName=cli/cli extractVersion=^v(?<version>.*)$
 ARG GH_VERSION=2.97.0
+# renovate: datasource=github-releases depName=mikefarah/yq extractVersion=^v(?<version>.*)$
 ARG YQ_VERSION=4.53.3
+# renovate: datasource=github-releases depName=sigstore/cosign extractVersion=^v(?<version>.*)$
 ARG COSIGN_VERSION=3.0.5
+# renovate: datasource=github-releases depName=argoproj/argo-cd extractVersion=^v(?<version>.*)$
 ARG ARGOCD_VERSION=3.3.4
+# renovate: datasource=github-releases depName=google/go-containerregistry extractVersion=^v(?<version>.*)$
 ARG CRANE_VERSION=0.21.9
+# renovate: datasource=github-releases depName=GoogleContainerTools/container-structure-test extractVersion=^v(?<version>.*)$
 ARG CST_VERSION=1.22.1
+# renovate: datasource=github-releases depName=aquaproj/aqua extractVersion=^v(?<version>.*)$
 ARG AQUA_VERSION=2.62.3
 
 RUN apk add --no-cache curl git openssl \
