@@ -3,7 +3,7 @@ FROM alpine:3.24@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec4
 # renovate: datasource=github-releases depName=cli/cli extractVersion=^v(?<version>.*)$
 ARG GH_VERSION=2.97.0
 # renovate: datasource=github-releases depName=spinframework/spin extractVersion=^v(?<version>.*)$
-ARG SPIN_VERSION=3.6.3
+ARG SPIN_VERSION=4.0.2
 # renovate: datasource=github-releases depName=kubernetes/kubernetes extractVersion=^v(?<version>.*)$
 ARG KUBECTL_VERSION=1.36.3
 # renovate: datasource=github-releases depName=helm/helm extractVersion=^v(?<version>.*)$
