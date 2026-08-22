@@ -44,6 +44,17 @@
 
   "packageRules": [
     {
+      "description": [
+        "First-party code does not soak. minimumReleaseAge buys time for someone",
+        "else to notice a poisoned release before we take it; there is no someone",
+        "else here — we wrote it, reviewed it and merged it. Waiting three days on",
+        "our own reusable workflow only delays fixes to the thing that gates every",
+        "other check."
+      ],
+      "matchPackageNames": ["Tsuguya/**"],
+      "minimumReleaseAge": "0"
+    },
+    {
       // Written as a packageRule rather than a top-level `docker` block, which is
       // the pre-migration spelling Renovate rewrites on sight.
       "description": "Pin docker digests (the base image); digest-cooldown soaks them",
