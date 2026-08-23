@@ -5,11 +5,11 @@ ARG GH_VERSION=2.97.0
 # renovate: datasource=github-releases depName=spinframework/spin extractVersion=^v(?<version>.*)$
 ARG SPIN_VERSION=4.0.2
 # renovate: datasource=github-releases depName=kubernetes/kubernetes extractVersion=^v(?<version>.*)$
-ARG KUBECTL_VERSION=1.36.3
+ARG KUBECTL_VERSION=1.36.4
 # renovate: datasource=github-releases depName=helm/helm extractVersion=^v(?<version>.*)$
-ARG HELM_VERSION=3.18.4
+ARG HELM_VERSION=3.21.4
 # renovate: datasource=github-releases depName=grafana/loki extractVersion=^v(?<version>.*)$
-ARG LOGCLI_VERSION=3.6.7
+ARG LOGCLI_VERSION=3.7.6
 
 RUN apk add --no-cache \
       bash curl git jq libgcc libstdc++ openssl ripgrep unzip \
