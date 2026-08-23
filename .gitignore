@@ -1,0 +1,4 @@
+
+# Claude Code の worktree。リポジトリ内に作られるので、git add -A で
+# gitlink としてステージされる事故を防ぐ。
+.claude/worktrees/
