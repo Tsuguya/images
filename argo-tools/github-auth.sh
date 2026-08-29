@@ -25,7 +25,7 @@ if [ -z "$INSTALLATION_ID" ]; then
     echo "Set GITHUB_REPO=owner/name or GITHUB_APP_INSTALLATION_ID" >&2
     exit 1
   fi
-  RESPONSE=$(curl -sf \
+  RESPONSE=$(curl -sfL \
     -H "Authorization: Bearer ${JWT}" \
     -H "Accept: application/vnd.github+json" \
     "${API}/repos/${GITHUB_REPO}/installation") || {
