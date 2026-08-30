@@ -10,9 +10,11 @@ ARG KUBECTL_VERSION=1.36.4
 ARG HELM_VERSION=3.21.4
 # renovate: datasource=github-releases depName=grafana/loki extractVersion=^v(?<version>.*)$
 ARG LOGCLI_VERSION=3.7.6
+# renovate: datasource=golang-version depName=go
+ARG GO_VERSION=1.26.0
 
 RUN apk add --no-cache \
-      bash curl git jq libgcc libstdc++ openssl ripgrep unzip \
+      bash curl git jq libgcc libstdc++ make openssl ripgrep unzip \
       rustup gcc musl-dev
 
 RUN curl -fsSL https://claude.ai/install.sh | bash \
@@ -41,10 +43,18 @@ RUN wget -qO /tmp/gh.tar.gz "https://github.com/cli/cli/releases/download/v${GH_
     && chmod +x /usr/local/bin/gh /usr/local/bin/spin /usr/local/bin/kubectl /usr/local/bin/helm /usr/local/bin/logcli \
     && rm -rf /tmp/*
 
+# Go は Go を要求するリポジトリをレビューするために要る。ツールチェーン本体だけを置き、
+# golangci-lint / setup-envtest といった個々のツールは焼かない — 対象リポの Makefile が
+# 自分でバージョンを固定して取りに行き、Renovate がそれを追っているので、ここに焼くと
+# バージョンの管理点が 2 つになって必ず片方が腐る。
+RUN wget -qO /tmp/go.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz" \
+    && tar xzf /tmp/go.tar.gz -C /usr/local \
+    && rm -f /tmp/go.tar.gz
+
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     USE_BUILTIN_RIPGREP=0 \
     PNPM_HOME="/usr/local/share/pnpm"
-ENV PATH="/usr/local/share/pnpm:/usr/local/cargo/bin:${PATH}"
+ENV PATH="/usr/local/share/pnpm:/usr/local/cargo/bin:/usr/local/go/bin:${PATH}"
 
 USER 65532:65532
