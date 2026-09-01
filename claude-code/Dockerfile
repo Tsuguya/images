@@ -7,7 +7,7 @@ ARG SPIN_VERSION=4.0.2
 # renovate: datasource=github-releases depName=kubernetes/kubernetes extractVersion=^v(?<version>.*)$
 ARG KUBECTL_VERSION=1.36.4
 # renovate: datasource=github-releases depName=helm/helm extractVersion=^v(?<version>.*)$
-ARG HELM_VERSION=3.21.4
+ARG HELM_VERSION=4.2.4
 # renovate: datasource=github-releases depName=grafana/loki extractVersion=^v(?<version>.*)$
 ARG LOGCLI_VERSION=3.7.6
 # renovate: datasource=golang-version depName=go
